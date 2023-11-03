@@ -1,0 +1,82 @@
+[gd_scene load_steps=7 format=3 uid="uid://ct1rh7ephts5"]
+
+[ext_resource type="Script" path="res://PlayerMovement.gd" id="1_tcro6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_x3p00"]
+
+[sub_resource type="Sky" id="Sky_g75pa"]
+sky_material = SubResource("ProceduralSkyMaterial_x3p00")
+
+[sub_resource type="Environment" id="Environment_u36cc"]
+background_mode = 2
+sky = SubResource("Sky_g75pa")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_73opd"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4sesh"]
+
+[node name="SceneCanvas" type="CanvasLayer"]
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D"]
+environment = SubResource("Environment_u36cc")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.23373, 0)
+script = ExtResource("1_tcro6")
+
+[node name="PlayerModel" type="MeshInstance3D" parent="Node3D/CharacterBody3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_73opd")
+
+[node name="PlayerCollision" type="CollisionShape3D" parent="Node3D/CharacterBody3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_4sesh")
+
+[node name="CameraOrigin" type="Node3D" parent="Node3D/CharacterBody3D"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Node3D/CharacterBody3D/CameraOrigin"]
+spring_length = 5.0
+margin = 0.0
+
+[node name="Camera3D" type="Camera3D" parent="Node3D/CharacterBody3D/CameraOrigin/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+fov = 130.0
+near = 0.001
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Node3D/CharacterBody3D/CameraOrigin/SpringArm3D/Camera3D"]
+transform = Transform3D(-1, 6.18172e-08, 6.18172e-08, 0, -0.707107, 0.707107, 8.74228e-08, 0.707107, 0.707107, -3, 5, 12)
+light_energy = 1.5
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(100, 0, 0, 0, 0.1, 0, 0, 0, 100, 0, 0, 0)
+use_collision = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -25.3385, 0.879148, 12.0876)
+use_collision = true
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(3.09017, -8.3144e-07, 9.51057, 0, -10, -8.74228e-07, 9.51057, 2.70151e-07, -3.09017, 18.1554, -2.29047, -17.523)
+use_collision = true
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 12.2967, -3.86496, 11.7889)
+use_collision = true
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(10, 0, 0, 0, 100, 0, 0, 0, 10, -33.2598, 1.42389, -22.342)
+use_collision = true
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(10, 0, 0, 0, 100, 0, 0, 0, 10, -7.54702, 1.42389, -22.342)
+use_collision = true
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Node3D"]
+transform = Transform3D(50, 0, 0, 0, 25, 0, 0, 0, 50, -9.17323, -3.1605, 38.9235)
+use_collision = true
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(20, 0, 0, 0, 17.3205, -10, 0, 10, 17.3205, 27.7319, -3.83586, 22.026)
+use_collision = true
