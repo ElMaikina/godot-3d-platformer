@@ -1,29 +1,27 @@
 extends CharacterBody3D
 
-@onready var pivot = $Pivot
-@export var sens = 0.2
-
-const CAMERA_MAX = -60
-const CAMERA_MIN = -5
-const SPEED = 15.0
-const JUMP = 10.0
-const SLIDE = -1
-const WALJMP = 16
+@onready var PIVOT = $Pivot
+@export var CAMERA_MAX = -PI/3
+@export var CAMERA_MIN = -PI/20
+@export var SENSIBILTY = 0.005
+@export var WALLJUMP = 12
+@export var GRAVITY = 20
+@export var SPEED = 8.0
+@export var SLIDE = -1.0
+@export var JUMP = 15.0
 
 var can_move = true
 var can_fall = true
 var speed = 0
 
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-
-func can_move_again(time):
+func can_move_now(time):
 	await get_tree().create_timer(time).timeout
-	speed = sqrt(velocity.x**2 + velocity.y**2 + velocity.z**2)
+	speed = velocity.length()
 	can_move = true
 	
 func manage_falling(delta):
 	if not is_on_floor():
-		velocity.y -= gravity * delta
+		velocity.y -= GRAVITY * delta
 
 func manage_sliding(delta):
 	if not is_on_floor() and is_on_wall() and velocity.y < SLIDE:
@@ -35,12 +33,12 @@ func manage_jumping(delta):
 
 func manage_walljump(delta):
 	if Input.is_action_just_pressed("jump") and is_on_wall_only():
-		can_move = false
 		var normal = get_wall_normal()
-		velocity.x = normal.x * WALJMP
-		velocity.z = normal.z * WALJMP
-		velocity.y = JUMP
-		can_move_again(0.6)
+		velocity.x = normal.x * SPEED
+		velocity.z = normal.z * SPEED
+		velocity.y = WALLJUMP
+		can_move = false
+		can_move_now(0.6)
 
 func manage_running(delta):
 	var input_keys = Input.get_vector("left", "right", "up", "down")
@@ -62,19 +60,19 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		rotate_y(deg_to_rad(-event.relative.x * sens))
-		pivot.rotate_x(
-			deg_to_rad(-event.relative.y * sens)
-		)
-		pivot.rotation.x = clamp(
-			pivot.rotation.x, 
-			deg_to_rad(CAMERA_MAX), 
-			deg_to_rad(CAMERA_MIN)
+		rotate_y(-event.relative.x * SENSIBILTY)
+		PIVOT.rotate_x(-event.relative.y * SENSIBILTY)
+		PIVOT.rotation.x = clamp(
+			PIVOT.rotation.x,
+			CAMERA_MAX,
+			CAMERA_MIN
 		)
 
 func _physics_process(delta):
 	manage_falling(delta)
 	manage_jumping(delta)
+	manage_sliding(delta)
 	manage_running(delta)
 	manage_exiting(delta)
+	manage_walljump(delta)
 	move_and_slide()
