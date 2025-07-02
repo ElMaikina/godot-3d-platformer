@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://ct1rh7ephts5"]
 
-[ext_resource type="Script" path="res://PlayerMovement.gd" id="1_tcro6"]
+[ext_resource type="Script" uid="uid://hw7hwoqf04rb" path="res://PlayerMovement.gd" id="1_tcro6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_x3p00"]
 
@@ -22,30 +22,26 @@ sky = SubResource("Sky_g75pa")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D"]
 environment = SubResource("Environment_u36cc")
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.23373, 0)
+[node name="Player" type="CharacterBody3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 0)
 script = ExtResource("1_tcro6")
 
-[node name="PlayerModel" type="MeshInstance3D" parent="Node3D/CharacterBody3D"]
+[node name="Model" type="MeshInstance3D" parent="Node3D/Player"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_73opd")
 
-[node name="PlayerCollision" type="CollisionShape3D" parent="Node3D/CharacterBody3D"]
+[node name="Collision" type="CollisionShape3D" parent="Node3D/Player"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_4sesh")
 
-[node name="CameraOrigin" type="Node3D" parent="Node3D/CharacterBody3D"]
+[node name="Pivot" type="Node3D" parent="Node3D/Player"]
 
-[node name="SpringArm3D" type="SpringArm3D" parent="Node3D/CharacterBody3D/CameraOrigin"]
-spring_length = 5.0
-margin = 0.0
-
-[node name="Camera3D" type="Camera3D" parent="Node3D/CharacterBody3D/CameraOrigin/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+[node name="Camera" type="Camera3D" parent="Node3D/Player/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 fov = 130.0
 near = 0.001
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Node3D/CharacterBody3D/CameraOrigin/SpringArm3D/Camera3D"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Node3D/Player/Pivot/Camera"]
 transform = Transform3D(-1, 6.18172e-08, 6.18172e-08, 0, -0.707107, 0.707107, 8.74228e-08, 0.707107, 0.707107, -3, 5, 12)
 light_energy = 1.5
 
